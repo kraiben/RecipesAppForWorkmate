@@ -4,7 +4,7 @@ import com.gab.recipesappforworkmate.data.network.dto.SearchRecipesResultDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface ApiService {
+interface RecipesApiService {
     @GET("recipes/complexSearch?${BASE_SEARCH_QUERY}")
     suspend fun searchRecipes(
         @Query("query") query: String,
@@ -21,7 +21,6 @@ interface ApiService {
 
 
     companion object {
-        protected const val API_KEY: String = "c631f4a7c3d04d5ea0dd6eca94bce350"
         protected const val BASE_SEARCH_QUERY: String = "instructionsRequired=true&fillIngredients=true&addRecipeInformation=true&addRecipeInstructions=true&"
     }
 }
