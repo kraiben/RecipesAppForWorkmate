@@ -1,0 +1,63 @@
+package com.gab.recipesappforworkmate.data.filework
+
+import androidx.core.net.toUri
+import com.gab.recipesappforworkmate.data.filework.entities.DishTypeEntity
+import com.gab.recipesappforworkmate.data.filework.entities.IngredientEntity
+import com.gab.recipesappforworkmate.data.filework.entities.RecipeEntity
+import com.gab.recipesappforworkmate.data.filework.entities.RecipeStepEntity
+import com.gab.recipesappforworkmate.data.filework.entities.RecipeWithDetails
+import com.gab.recipesappforworkmate.domain.entities.DishType
+import com.gab.recipesappforworkmate.domain.entities.IngredientInfoModel
+import com.gab.recipesappforworkmate.domain.entities.RecipeInfoModel
+import com.gab.recipesappforworkmate.domain.entities.RecipeStepInfoModel
+import javax.inject.Inject
+
+class DatabaseMapper @Inject constructor() {
+    fun RecipeInfoModel.toEntity(): RecipeEntity = RecipeEntity(
+        id = id,
+        title = title,
+        cookingTimeInMinutes = cookingTimeInMinutes,
+        recipeImageUri = recipeImageUri.toString(),
+        summaryDescription = summaryDescription
+    )
+
+    fun DishType.toEntity(): DishTypeEntity = DishTypeEntity(name = this.name)
+
+    fun IngredientInfoModel.toEntity(recipeId: Long): IngredientEntity = IngredientEntity(
+        recipeId = recipeId,
+        name = name,
+        amount = amount,
+        unit = unit,
+        description = description,
+        ingredientIconUri = ingredientIconUri.toString()
+    )
+
+    fun RecipeStepInfoModel.toEntity(recipeId: Long): RecipeStepEntity = RecipeStepEntity(
+        recipeId = recipeId,
+        number = number,
+        description = description
+    )
+
+    fun RecipeWithDetails.toInfoModel(): RecipeInfoModel = RecipeInfoModel(
+        id = recipe.id,
+        title = recipe.title,
+        cookingTimeInMinutes = recipe.cookingTimeInMinutes,
+        dishTypes = dishTypes.map { DishType.fromName(it.name) },
+        ingredients = ingredients.map { it.toInfoModel() },
+        recipeImageUri = recipe.recipeImageUri.toUri(),
+        summaryDescription = recipe.summaryDescription,
+        instructions = instructions.map { it.toInfoModel() }
+    )
+    fun RecipeStepEntity.toInfoModel(): RecipeStepInfoModel = RecipeStepInfoModel(
+        number = number,
+        description = description
+    )
+    fun IngredientEntity.toInfoModel(): IngredientInfoModel = IngredientInfoModel(
+        ingredientId = ingredientId,
+        name = name,
+        amount = amount,
+        unit = unit,
+        description = description,
+        ingredientIconUri = ingredientIconUri.toUri()
+    )
+}

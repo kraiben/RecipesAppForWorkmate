@@ -5,8 +5,9 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface NetworkRepository {
 
-    fun getRandomRecipes(): StateFlow<List<RecipeInfoModel>>
+    suspend fun updateRandomRecipesFlow()
+    suspend fun searchRecipes(query: String, number: Int, offset: Int)
 
-    fun searchRecipes(query: String, number: Int, offset: Int): StateFlow<List<RecipeInfoModel>>
-
+    fun getSearchedRecipesFlow(): StateFlow<List<RecipeInfoModel>>
+    fun getRandomRecipesFlow(): StateFlow<List<RecipeInfoModel>>
 }

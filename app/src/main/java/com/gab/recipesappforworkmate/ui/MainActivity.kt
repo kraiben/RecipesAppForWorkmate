@@ -3,26 +3,29 @@ package com.gab.recipesappforworkmate.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextLinkStyles
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.fromHtml
-import androidx.compose.ui.text.style.TextDecoration
+import com.gab.recipesappforworkmate.di.ApplicationComponent
+import com.gab.recipesappforworkmate.domain.repositories.DatabaseRepository
+import com.gab.recipesappforworkmate.domain.repositories.NetworkRepository
 import com.gab.recipesappforworkmate.ui.theme.RecipesAppForWorkmateTheme
+import com.gab.recipesappforworkmate.util.GAB_CHECK
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
+
+    private val component: ApplicationComponent by lazy {
+        (application as RecipesApplication).component
+    }
+
+    @Inject
+    lateinit var exps: Exps
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+//        enableEdgeToEdge()
+        component.inject(this)
         setContent {
             RecipesAppForWorkmateTheme {
 
@@ -31,27 +34,25 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun HtmlText(
-    text: String,
-    modifier: Modifier = Modifier,
-    style: TextStyle = LocalTextStyle.current,
+class Exps @Inject constructor(
+    private val databaseRepository: DatabaseRepository,
+    private val networkRepository: NetworkRepository
 ) {
-
-    val annotatedString = remember(text) {
-        AnnotatedString.fromHtml(
-            text, linkStyles = TextLinkStyles(
-                style = SpanStyle(
-                    textDecoration = TextDecoration.Underline,
-                    fontStyle = FontStyle.Italic,
-                    color = Color.Blue
-                )
-            )
-        )
+    private val cs = CoroutineScope(Dispatchers.IO)
+    init {
+        cs.launch {
+            networkRepository.searchRecipes("pasta", 3, 2)
+            networkRepository.getSearchedRecipesFlow().collect {
+                GAB_CHECK(it.size)
+                it.forEach {r ->
+                    databaseRepository.saveRecipe(r)
+                }
+            }
+        }
+        cs.launch {
+            databaseRepository.getSavedRecipes().collect {
+                GAB_CHECK(it)
+            }
+        }
     }
-    Text(
-        text = annotatedString,
-        modifier = modifier,
-        style = style
-    )
 }

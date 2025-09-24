@@ -18,7 +18,7 @@ enum class DishType(name: String) {
     NONE("");
 
     companion object {
-        fun getByName(name: String): DishType {
+        fun fromName(name: String): DishType {
             return when (name) {
                 MAIN_COURSE.name -> MAIN_COURSE
                 SIDE_DISH.name -> SIDE_DISH

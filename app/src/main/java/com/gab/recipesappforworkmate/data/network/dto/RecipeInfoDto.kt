@@ -10,5 +10,5 @@ data class RecipeInfoDto(
     @SerializedName("extendedIngredients") val ingredients: List<IngredientInfoDto>,
     @SerializedName("summary") val summaryDescription: String,
     @SerializedName("dishTypes") val dishTypes: List<String>,
-    @SerializedName("analyzedInstructions") val instructions: InstructionsDto,
+    @SerializedName("analyzedInstructions") val instructions: List<InstructionsDto>,
 )

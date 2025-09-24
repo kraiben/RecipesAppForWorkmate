@@ -11,13 +11,13 @@ interface RecipesApiService {
         @Query("number") number: Int,
         @Query("offset") offset: Int,
         @Query("apiKey") apiKey: String = API_KEY
-    ): Result<SearchRecipesResultDto>
+    ): SearchRecipesResultDto
 
     @GET("recipes/random")
     suspend fun getRandomRecipes(
         @Query("number") number: Int,
         @Query("apiKey") apiKey: String = API_KEY
-    ): Result<SearchRecipesResultDto>
+    ): SearchRecipesResultDto
 
 
     companion object {
