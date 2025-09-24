@@ -69,6 +69,8 @@ dependencies {
     implementation(libs.dagger)
     kapt(libs.dagger.compiler)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.logging.interceptor)
+    implementation(libs.converter.gson)
     implementation(libs.androidx.room)
     kapt(libs.androidx.room.copiler)
     implementation(libs.androidx.room.ktx)
