@@ -15,7 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.gab.recipesappforworkmate.domain.entities.DishType
+import com.gab.recipesappforworkmate.domain.models.DishType
 
 @Composable
 fun DishTypesSelector(
@@ -63,7 +63,7 @@ fun DishTypesSelector(
                 )
             }
         }
-        items(items = dishTypesToSelect, key = {it.typeName}) {dishType ->
+        items(items = dishTypesToSelect, key = { it.typeName }) { dishType ->
             if (dishType != selectedType) {
                 Spacer(modifier = Modifier.width(4.dp))
                 InputChip(

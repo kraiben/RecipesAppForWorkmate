@@ -7,7 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.navArgument
-import com.gab.recipesappforworkmate.domain.entities.RecipeInfoModel
+import com.gab.recipesappforworkmate.domain.models.RecipeInfoModel
 
 @Composable
 fun RecipesNavGraph(
@@ -37,7 +37,7 @@ fun RecipesNavGraph(
                     Screens.KEY_RECIPE_DETAILS
                 ) {},
 
-            ),
+                ),
             dialogProperties = DialogProperties(
                 usePlatformDefaultWidth = false
             )

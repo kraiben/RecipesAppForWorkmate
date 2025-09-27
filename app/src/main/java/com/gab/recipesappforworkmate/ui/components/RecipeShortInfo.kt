@@ -27,7 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.gab.recipesappforworkmate.domain.entities.RecipeInfoModel
+import com.gab.recipesappforworkmate.domain.models.RecipeInfoModel
 
 @Composable
 fun RecipeShortInfo(
@@ -49,9 +49,7 @@ fun RecipeShortInfo(
                 color = Color.Transparent,
             )
     ) {
-        Box(
-
-        ) {
+        Box {
             AsyncImage(
                 model = recipe.recipeImageUri,
                 contentDescription = "",

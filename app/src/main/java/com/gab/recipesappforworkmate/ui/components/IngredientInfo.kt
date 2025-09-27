@@ -16,13 +16,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.gab.recipesappforworkmate.domain.entities.IngredientInfoModel
+import com.gab.recipesappforworkmate.domain.models.IngredientInfoModel
 
 @Composable
 fun IngredientInfo(
     modifier: Modifier = Modifier,
     ingredient: IngredientInfoModel,
-    colors: ListItemColors
+    colors: ListItemColors,
 ) {
     ListItem(
         colors = colors,

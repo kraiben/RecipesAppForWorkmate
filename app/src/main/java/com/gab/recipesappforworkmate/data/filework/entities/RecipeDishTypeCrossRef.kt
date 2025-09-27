@@ -23,5 +23,5 @@ import androidx.room.ForeignKey
 )
 data class RecipeDishTypeCrossRef(
     val recipeId: Long,
-    val dishTypeName: String
+    val dishTypeName: String,
 )

@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,23 +20,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.gab.recipesappforworkmate.domain.entities.DishType
-import com.gab.recipesappforworkmate.domain.entities.RecipeInfoModel
+import com.gab.recipesappforworkmate.domain.models.DishType
+import com.gab.recipesappforworkmate.domain.models.RecipeInfoModel
 import com.gab.recipesappforworkmate.ui.components.DishTypesSelector
 import com.gab.recipesappforworkmate.ui.components.RecipeShortInfo
-import com.gab.recipesappforworkmate.util.GAB_CHECK
 
 @Composable
 fun SavedRecipesScreen(
     modifier: Modifier = Modifier,
     recipesList: List<RecipeInfoModel>?,
     deleteRecipe: (RecipeInfoModel) -> Unit,
-    onRecipeClick: (RecipeInfoModel) -> Unit
+    onRecipeClick: (RecipeInfoModel) -> Unit,
 ) {
     var selectedDishType by remember { mutableStateOf<DishType>(DishType.NONE) }
-    LaunchedEffect(selectedDishType) {
-        GAB_CHECK(selectedDishType)
-    }
     LazyColumn(modifier = modifier) {
         item {
             Text(
@@ -61,19 +56,23 @@ fun SavedRecipesScreen(
         if (recipesList?.isNotEmpty() ?: true) {
             items(items = recipesList?.filter {
                 (selectedDishType == DishType.NONE) || it.dishTypes.any { dt -> dt.typeName == selectedDishType.typeName }
-            } ?: emptyList()) {item ->
+            } ?: emptyList()) { item ->
                 RecipeShortInfo(
-                    modifier = Modifier.fillMaxWidth().clickable{onRecipeClick(item)},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { onRecipeClick(item) },
                     recipe = item,
                     isSaved = true,
                     onDeleteRecipe = deleteRecipe
-                    )
+                )
             }
         } else {
             item {
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1f)) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(1f)
+                ) {
                     Text(
                         modifier = Modifier.align(Alignment.Center),
                         text = "You have not any saved recipes",

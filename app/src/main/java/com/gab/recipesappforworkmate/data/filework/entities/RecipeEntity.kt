@@ -10,5 +10,5 @@ data class RecipeEntity(
     val title: String,
     val cookingTimeInMinutes: Int,
     val recipeImageUri: String,
-    val summaryDescription: String
+    val summaryDescription: String,
 )

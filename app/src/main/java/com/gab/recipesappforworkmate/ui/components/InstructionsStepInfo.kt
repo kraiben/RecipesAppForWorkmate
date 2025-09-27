@@ -11,7 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.gab.recipesappforworkmate.domain.entities.RecipeStepInfoModel
+import com.gab.recipesappforworkmate.domain.models.RecipeStepInfoModel
 
 @Composable
 fun InstructionsStepInfo(
@@ -24,7 +24,11 @@ fun InstructionsStepInfo(
             modifier = Modifier.wrapContentSize(align = Alignment.CenterStart),
             fontSize = 40.sp,
         )
-        VerticalDivider(thickness = 1.dp, modifier = Modifier.width(16.dp), color = MaterialTheme.colorScheme.secondary)
+        VerticalDivider(
+            thickness = 1.dp,
+            modifier = Modifier.width(16.dp),
+            color = MaterialTheme.colorScheme.secondary
+        )
         Text(
             text = step.description,
             modifier = Modifier.wrapContentSize(align = Alignment.CenterStart),

@@ -1,4 +1,4 @@
-package com.gab.recipesappforworkmate.domain.entities
+package com.gab.recipesappforworkmate.domain.models
 
 enum class DishType(val typeName: String) {
     MAIN_COURSE("main course"),
@@ -19,7 +19,7 @@ enum class DishType(val typeName: String) {
 
     companion object {
         fun fromName(name: String): DishType {
-            return when(name) {
+            return when (name) {
                 MAIN_COURSE.typeName -> MAIN_COURSE
                 SIDE_DISH.typeName -> SIDE_DISH
                 DESSERT.typeName -> DESSERT

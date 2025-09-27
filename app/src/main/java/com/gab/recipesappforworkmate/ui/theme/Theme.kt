@@ -67,7 +67,7 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun RecipesAppForWorkmateTheme(
     darkTheme: Boolean = true,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val colorScheme = when {
         darkTheme -> DarkColorScheme

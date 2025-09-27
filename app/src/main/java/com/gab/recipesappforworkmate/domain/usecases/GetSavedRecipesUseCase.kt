@@ -1,6 +1,6 @@
 package com.gab.recipesappforworkmate.domain.usecases
 
-import com.gab.recipesappforworkmate.domain.entities.RecipeInfoModel
+import com.gab.recipesappforworkmate.domain.models.RecipeInfoModel
 import com.gab.recipesappforworkmate.domain.repositories.DatabaseRepository
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject

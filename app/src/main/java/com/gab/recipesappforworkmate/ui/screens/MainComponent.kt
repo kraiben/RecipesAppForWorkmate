@@ -9,8 +9,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.gab.recipesappforworkmate.domain.entities.DishType
-import com.gab.recipesappforworkmate.domain.entities.RecipeInfoModel
+import com.gab.recipesappforworkmate.domain.models.DishType
+import com.gab.recipesappforworkmate.domain.models.RecipeInfoModel
 import com.gab.recipesappforworkmate.ui.MainViewModel
 import com.gab.recipesappforworkmate.ui.components.RecipesScaffold
 import com.gab.recipesappforworkmate.ui.navigation.RecipesNavGraph
@@ -35,8 +35,8 @@ fun MainComponent(
             )
         }
     }
+    val isLastPage = remember { { chunk: Int -> viewModel.isLastPage(chunk) } }
     val randomRecipes by viewModel.getRandomRecipes(25).collectAsState()
-    val searchTotalResults by viewModel.getTotalSearchResultAmount().collectAsState()
     val searchedRecipes by viewModel.getSearchedRecipes().collectAsState()
     val savedRecipes by viewModel.getSavedRecipes().collectAsState()
     val isRecipeSaved = remember { { id: Long -> savedRecipes?.any { it.id == id } ?: false } }
@@ -79,7 +79,7 @@ fun MainComponent(
                         .padding(paddingValues)
                         .fillMaxSize(),
                     recipesList = searchedRecipes,
-                    totalResults = searchTotalResults,
+                    isLastPage = isLastPage,
                     isRecipeSaved = isRecipeSaved,
                     onSaveRecipe = onSaveRecipe,
                     onDeleteRecipe = onDeleteRecipe,
@@ -88,7 +88,21 @@ fun MainComponent(
                             navigationState.navigateToRecipeDetails(it)
                         }
                     },
-                    onSearch = searchRecipe
+                    onSearch = searchRecipe,
+                    onNextPage = { query, dishType, chunk ->
+                        searchRecipe(
+                            query,
+                            dishType,
+                            chunk + 1
+                        )
+                    },
+                    onPreviousPage = { query, dishType, chunk ->
+                        searchRecipe(
+                            query,
+                            dishType,
+                            chunk - 1
+                        )
+                    }
                 )
             },
             { recipeInfoModel ->

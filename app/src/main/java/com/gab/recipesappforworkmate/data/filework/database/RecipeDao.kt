@@ -30,6 +30,9 @@ interface RecipeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRecipeSteps(steps: List<RecipeStepEntity>)
 
+    @Query("SELECT * FROM recipes WHERE title LIKE '%' || :query || '%' COLLATE NOCASE")
+    suspend fun searchRecipesByTitle(query: String): List<RecipeWithDetails>
+
     @Transaction
     @Query("SELECT * FROM recipes WHERE id = :recipeId")
     suspend fun getRecipeWithDetails(recipeId: Long): RecipeWithDetails?

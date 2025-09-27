@@ -6,10 +6,10 @@ import com.gab.recipesappforworkmate.data.filework.entities.IngredientEntity
 import com.gab.recipesappforworkmate.data.filework.entities.RecipeEntity
 import com.gab.recipesappforworkmate.data.filework.entities.RecipeStepEntity
 import com.gab.recipesappforworkmate.data.filework.entities.RecipeWithDetails
-import com.gab.recipesappforworkmate.domain.entities.DishType
-import com.gab.recipesappforworkmate.domain.entities.IngredientInfoModel
-import com.gab.recipesappforworkmate.domain.entities.RecipeInfoModel
-import com.gab.recipesappforworkmate.domain.entities.RecipeStepInfoModel
+import com.gab.recipesappforworkmate.domain.models.DishType
+import com.gab.recipesappforworkmate.domain.models.IngredientInfoModel
+import com.gab.recipesappforworkmate.domain.models.RecipeInfoModel
+import com.gab.recipesappforworkmate.domain.models.RecipeStepInfoModel
 import javax.inject.Inject
 
 class DatabaseMapper @Inject constructor() {

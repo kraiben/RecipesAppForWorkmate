@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class RecipeStepInfoDto(
     @SerializedName("number") val number: Int,
-    @SerializedName("step") val description: String
+    @SerializedName("step") val description: String,
 )

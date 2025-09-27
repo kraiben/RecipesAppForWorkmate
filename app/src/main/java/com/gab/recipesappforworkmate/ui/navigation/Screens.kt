@@ -1,14 +1,14 @@
 package com.gab.recipesappforworkmate.ui.navigation
 
-import com.gab.recipesappforworkmate.domain.entities.RecipeInfoModel
+import com.gab.recipesappforworkmate.domain.models.RecipeInfoModel
 
 sealed class Screens(val route: String) {
 
-    data object HomeScreen: Screens(ROUTE_HOME_SCREEN)
-    data object SavedRecipesScreen: Screens(ROUTE_SAVED_RECIPES_SCREEN)
-    data object SearchRecipesScreen: Screens(ROUTE_SEARCH_RECIPES_SCREEN)
+    data object HomeScreen : Screens(ROUTE_HOME_SCREEN)
+    data object SavedRecipesScreen : Screens(ROUTE_SAVED_RECIPES_SCREEN)
+    data object SearchRecipesScreen : Screens(ROUTE_SEARCH_RECIPES_SCREEN)
 
-    data object RecipeDetailsScreen: Screens(ROUTE_RECIPE_DETAILS_SCREEN) {
+    data object RecipeDetailsScreen : Screens(ROUTE_RECIPE_DETAILS_SCREEN) {
         private const val ROUTE_FOR_ARGS = "ROUTE_RECIPE_DETAILS_SCREEN"
 
         fun getRouteWithArgs(recipe: RecipeInfoModel): String {

@@ -14,6 +14,6 @@ fun LoadingCircle(modifier: Modifier = Modifier) {
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize()
     ) {
-        CircularProgressIndicator(color = MaterialTheme.colorScheme.primary, modifier = modifier )
+        CircularProgressIndicator(color = MaterialTheme.colorScheme.primary, modifier = modifier)
     }
 }

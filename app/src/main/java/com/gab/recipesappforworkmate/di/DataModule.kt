@@ -29,12 +29,13 @@ class DataModule {
     fun provideRecipesDao(recipesDataBase: RecipeDatabase): RecipeDao {
         return recipesDataBase.recipeDao()
     }
+
     @Provides
     fun provideOkHttpClient(): OkHttpClient =
         OkHttpClient.Builder()
-            .connectTimeout(6, TimeUnit.SECONDS) // ← увеличиваем таймаут соединения
-            .readTimeout(6, TimeUnit.SECONDS)    // ← увеличиваем таймаут чтения
-            .writeTimeout(6, TimeUnit.SECONDS)   // ← увеличиваем таймаут записи
+            .connectTimeout(1, TimeUnit.SECONDS)
+            .readTimeout(1, TimeUnit.SECONDS)
+            .writeTimeout(1, TimeUnit.SECONDS)
             .addInterceptor(
                 HttpLoggingInterceptor().apply {
                     level = HttpLoggingInterceptor.Level.BODY
@@ -50,5 +51,6 @@ class DataModule {
             .build()
 
     @Provides
-    fun provideApiService(retrofit: Retrofit): RecipesApiService = retrofit.create<RecipesApiService>()
+    fun provideApiService(retrofit: Retrofit): RecipesApiService =
+        retrofit.create<RecipesApiService>()
 }

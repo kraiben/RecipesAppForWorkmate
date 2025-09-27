@@ -34,8 +34,8 @@ import androidx.compose.ui.Modifier
 fun ClosableDescription(
     modifier: Modifier = Modifier,
     titleText: String,
-    descriptionText: String
-    ) {
+    descriptionText: String,
+) {
     var isVisible by remember {
         mutableStateOf(false)
     }
