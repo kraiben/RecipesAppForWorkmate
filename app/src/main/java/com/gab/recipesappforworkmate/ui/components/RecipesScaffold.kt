@@ -24,7 +24,7 @@ import com.gab.recipesappforworkmate.ui.navigation.NavigationState
 fun RecipesScaffold(
     modifier: Modifier = Modifier,
     navigationState: NavigationState,
-    content: @Composable (PaddingValues) -> Unit
+    content: @Composable (PaddingValues) -> Unit,
 ) {
 
     Scaffold(

@@ -1,4 +1,4 @@
-package com.gab.recipesappforworkmate.domain.entities
+package com.gab.recipesappforworkmate.domain.models
 
 import android.net.Uri
 import androidx.core.net.toUri
@@ -20,16 +20,6 @@ data class RecipeInfoModel(
     fun toJson(): String = gson.toJson(this).encode()
 
     companion object {
-        val EMPTY = RecipeInfoModel(
-            id = -1,
-            title = "",
-            cookingTimeInMinutes = -1,
-            dishTypes = emptyList(),
-            ingredients = emptyList(),
-            recipeImageUri = Uri.EMPTY,
-            summaryDescription = "",
-            instructions = emptyList()
-        )
 
         fun fromJson(str: String): RecipeInfoModel {
             return gson.fromJson(str, RecipeInfoModel::class.java)
@@ -48,6 +38,7 @@ data class RecipeInfoModel(
         private val gson = GsonBuilder()
             .registerTypeAdapter(Uri::class.java, UriTypeAdapter)
             .create()
+
         fun String.encode(): String {
             return Uri.encode(this)
         }

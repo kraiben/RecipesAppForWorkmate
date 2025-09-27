@@ -1,4 +1,4 @@
-package com.gab.recipesappforworkmate.domain.entities
+package com.gab.recipesappforworkmate.domain.models
 
 import android.net.Uri
 
@@ -8,5 +8,5 @@ data class IngredientInfoModel(
     val amount: Float,
     val unit: String,
     val description: String,
-    val ingredientIconUri: Uri
+    val ingredientIconUri: Uri,
 )

@@ -32,7 +32,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.gab.recipesappforworkmate.util.GAB_CHECK
 
 @Composable
 fun <T> ClosableColumnWithTitle(
@@ -41,7 +40,6 @@ fun <T> ClosableColumnWithTitle(
     items: List<T>,
     itemContent: @Composable (T) -> Unit,
 ) {
-    GAB_CHECK(items)
     var isVisible by remember {
         mutableStateOf(false)
     }

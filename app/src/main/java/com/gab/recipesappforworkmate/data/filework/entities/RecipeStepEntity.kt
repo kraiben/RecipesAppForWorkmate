@@ -20,5 +20,5 @@ data class RecipeStepEntity(
     val stepId: Long = 0,
     val recipeId: Long,
     val number: Int,
-    val description: String
+    val description: String,
 )

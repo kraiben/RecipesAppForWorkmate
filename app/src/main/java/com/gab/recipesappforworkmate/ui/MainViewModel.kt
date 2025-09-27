@@ -2,8 +2,8 @@ package com.gab.recipesappforworkmate.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.gab.recipesappforworkmate.domain.entities.DishType
-import com.gab.recipesappforworkmate.domain.entities.RecipeInfoModel
+import com.gab.recipesappforworkmate.domain.models.DishType
+import com.gab.recipesappforworkmate.domain.models.RecipeInfoModel
 import com.gab.recipesappforworkmate.domain.usecases.DeleteRecipeUseCase
 import com.gab.recipesappforworkmate.domain.usecases.GetRandomRecipesFlowUseCase
 import com.gab.recipesappforworkmate.domain.usecases.GetSavedRecipesUseCase
@@ -24,7 +24,7 @@ class MainViewModel @Inject constructor(
     private val isLastPageUseCase: IsLastPageUseCase,
 ) : ViewModel() {
 
-    fun getTotalSearchResultAmount() = isLastPageUseCase()
+    fun isLastPage(chunk: Int) = isLastPageUseCase(chunk)
     fun getSearchedRecipes() = getSearchedRecipesUseCase()
     fun searchRecipes(query: String, dishTypeFilter: DishType, chunk: Int) {
         viewModelScope.launch {

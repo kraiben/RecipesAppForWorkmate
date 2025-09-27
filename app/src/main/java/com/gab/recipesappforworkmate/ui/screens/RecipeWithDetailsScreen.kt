@@ -24,7 +24,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.gab.recipesappforworkmate.domain.entities.RecipeInfoModel
+import com.gab.recipesappforworkmate.domain.models.RecipeInfoModel
 import com.gab.recipesappforworkmate.ui.components.ClosableColumnWithTitle
 import com.gab.recipesappforworkmate.ui.components.ClosableDescription
 import com.gab.recipesappforworkmate.ui.components.IngredientInfo
@@ -37,7 +37,8 @@ fun RecipeWithDetailsScreen(
 ) {
 
     LazyColumn(
-        modifier = modifier.background(color = MaterialTheme.colorScheme.background)
+        modifier = modifier
+            .background(color = MaterialTheme.colorScheme.background)
             .padding(horizontal = 16.dp)
     ) {
         item {

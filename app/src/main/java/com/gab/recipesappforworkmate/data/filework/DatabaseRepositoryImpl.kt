@@ -2,9 +2,8 @@ package com.gab.recipesappforworkmate.data.filework
 
 import com.gab.recipesappforworkmate.data.filework.database.RecipeDao
 import com.gab.recipesappforworkmate.data.filework.entities.RecipeDishTypeCrossRef
-import com.gab.recipesappforworkmate.domain.entities.RecipeInfoModel
+import com.gab.recipesappforworkmate.domain.models.RecipeInfoModel
 import com.gab.recipesappforworkmate.domain.repositories.DatabaseRepository
-import com.gab.recipesappforworkmate.util.GAB_CHECK
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -33,7 +32,6 @@ class DatabaseRepositoryImpl @Inject constructor(
 
     override suspend fun saveRecipe(recipe: RecipeInfoModel): Unit = withContext(Dispatchers.IO) {
         withContext(Dispatchers.IO) {
-            GAB_CHECK("saveRecipe $recipe")
             with(mapper) {
                 val recipeId = dao.insertRecipe(recipe.toEntity())
                 val dishTypesCrossRefs = recipe.dishTypes.map {
@@ -47,7 +45,7 @@ class DatabaseRepositoryImpl @Inject constructor(
             }
             savedRecipesFlow.value?.let { srf ->
                 _savedRecipesFlow.emit(
-                     listOf(recipe) + srf
+                    listOf(recipe) + srf
                 )
             }
         }

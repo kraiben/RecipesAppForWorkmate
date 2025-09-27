@@ -12,19 +12,18 @@ interface RecipesApiService {
         @Query("number") number: Int,
         @Query("type") type: String,
         @Query("offset") offset: Int,
-        @Query("apiKey") apiKey: String = API_KEY_2
+        @Query("apiKey") apiKey: String = API_KEY_2,
     ): SearchRecipesResultDto
 
     @GET("recipes/random?")
     suspend fun getRandomRecipes(
         @Query("number") number: Int,
-        @Query("apiKey") apiKey: String = API_KEY
+        @Query("apiKey") apiKey: String = API_KEY,
     ): RandomRecipesResultDto
 
 
-
-
     companion object {
-        protected const val BASE_SEARCH_QUERY: String = "instructionsRequired=true&fillIngredients=true&addRecipeInformation=true&addRecipeInstructions=true&"
+        protected const val BASE_SEARCH_QUERY: String =
+            "instructionsRequired=true&fillIngredients=true&addRecipeInformation=true&addRecipeInstructions=true&"
     }
 }

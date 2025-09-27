@@ -6,5 +6,5 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "dish_types")
 data class DishTypeEntity(
     @PrimaryKey
-    val name: String
+    val name: String,
 )

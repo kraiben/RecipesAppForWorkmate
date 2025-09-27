@@ -14,6 +14,7 @@ interface ApplicationModule {
     @Binds
     @ApplicationScope
     fun bindDatabaseRepository(imp: DatabaseRepositoryImpl): DatabaseRepository
+
     @Binds
     @ApplicationScope
     fun bindNetworkRepository(imp: NetworkRepositoryImpl): NetworkRepository

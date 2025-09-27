@@ -7,5 +7,5 @@ data class IngredientInfoDto(
     @SerializedName("image") val image: String,
     @SerializedName("name") val name: String,
     @SerializedName("original") val fullDescription: String,
-    @SerializedName("measures") val measures: IngredientMetcirMeasure
+    @SerializedName("measures") val measures: IngredientMetcirMeasure,
 )

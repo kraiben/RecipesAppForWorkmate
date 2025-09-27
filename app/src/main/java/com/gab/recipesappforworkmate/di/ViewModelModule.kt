@@ -19,5 +19,4 @@ interface ViewModelModule {
     fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 
 
-
 }

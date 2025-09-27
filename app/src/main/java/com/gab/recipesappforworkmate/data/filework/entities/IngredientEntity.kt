@@ -25,5 +25,5 @@ data class IngredientEntity(
     val amount: Float,
     val unit: String,
     val description: String,
-    val ingredientIconUri: String
+    val ingredientIconUri: String,
 )

@@ -22,12 +22,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.gab.recipesappforworkmate.domain.entities.DishType
-import com.gab.recipesappforworkmate.domain.entities.RecipeInfoModel
+import com.gab.recipesappforworkmate.domain.models.DishType
+import com.gab.recipesappforworkmate.domain.models.RecipeInfoModel
 import com.gab.recipesappforworkmate.ui.components.DishTypesSelector
 import com.gab.recipesappforworkmate.ui.components.LoadingCircle
 import com.gab.recipesappforworkmate.ui.components.RecipeShortInfo
-import com.gab.recipesappforworkmate.util.GAB_CHECK
 
 @Composable
 fun HomeScreen(
@@ -40,7 +39,6 @@ fun HomeScreen(
 ) {
     var selectedDishType by remember { mutableStateOf<DishType>(DishType.NONE) }
     LaunchedEffect(selectedDishType) {
-        GAB_CHECK(selectedDishType)
     }
     LazyColumn(modifier = modifier) {
         item {
