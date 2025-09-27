@@ -12,7 +12,7 @@ import com.gab.recipesappforworkmate.domain.entities.RecipeStepInfoModel
 import javax.inject.Inject
 
 
-class NetworkMapper @Inject constructor(){
+class NetworkMapper @Inject constructor() {
     fun RecipeInfoDto.toInfoModel(): RecipeInfoModel = RecipeInfoModel(
         id = id,
         title = title,
@@ -21,11 +21,13 @@ class NetworkMapper @Inject constructor(){
             DishType.fromName(it)
         },
         ingredients = ingredients.map { it.toInfoModel() },
-        recipeImageUri = imageLink.toUri(),
+        recipeImageUri = getRecipeImageLink(id, imageType),
         summaryDescription = summaryDescription,
-        instructions = instructions[0].steps.map {
-            it.toInfoModel()
-        }
+        instructions = if (instructions.isNotEmpty()) {
+            instructions[0].steps.map {
+                it.toInfoModel()
+            }
+        } else emptyList()
     )
 
     fun IngredientInfoDto.toInfoModel(): IngredientInfoModel = IngredientInfoModel(
@@ -45,9 +47,16 @@ class NetworkMapper @Inject constructor(){
         description = description
     )
 
+    fun getRecipeImageLink(recipeId: Long, imageType: String): Uri {
+        return "$RECIPE_IMAGE_URI_PREFIX$recipeId-$RECIPE_IMAGE_SIZE.$imageType".toUri()
+    }
+
     private companion object {
         private const val INGREDIENT_IMAGE_SIZE = "100x100"
         private const val INGREDIENT_IMAGE_URI_PREFIX =
             "https://img.spoonacular.com/ingredients_$INGREDIENT_IMAGE_SIZE/"
+        private const val RECIPE_IMAGE_SIZE = "556x370"
+        private const val RECIPE_IMAGE_URI_PREFIX =
+            "https://img.spoonacular.com/recipes/"
     }
 }

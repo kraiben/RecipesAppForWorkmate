@@ -13,6 +13,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
+import java.util.concurrent.TimeUnit
 
 @Module
 class DataModule {
@@ -25,12 +26,15 @@ class DataModule {
 
     @ApplicationScope
     @Provides
-    fun provideMusicDao(musicDataBase: RecipeDatabase): RecipeDao {
-        return musicDataBase.recipeDao()
+    fun provideRecipesDao(recipesDataBase: RecipeDatabase): RecipeDao {
+        return recipesDataBase.recipeDao()
     }
     @Provides
     fun provideOkHttpClient(): OkHttpClient =
         OkHttpClient.Builder()
+            .connectTimeout(6, TimeUnit.SECONDS) // ← увеличиваем таймаут соединения
+            .readTimeout(6, TimeUnit.SECONDS)    // ← увеличиваем таймаут чтения
+            .writeTimeout(6, TimeUnit.SECONDS)   // ← увеличиваем таймаут записи
             .addInterceptor(
                 HttpLoggingInterceptor().apply {
                     level = HttpLoggingInterceptor.Level.BODY

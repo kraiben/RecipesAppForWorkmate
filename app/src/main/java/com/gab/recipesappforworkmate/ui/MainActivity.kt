@@ -3,14 +3,15 @@ package com.gab.recipesappforworkmate.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Modifier
+import androidx.lifecycle.ViewModelProvider
 import com.gab.recipesappforworkmate.di.ApplicationComponent
-import com.gab.recipesappforworkmate.domain.repositories.DatabaseRepository
-import com.gab.recipesappforworkmate.domain.repositories.NetworkRepository
+import com.gab.recipesappforworkmate.ui.screens.MainComponent
 import com.gab.recipesappforworkmate.ui.theme.RecipesAppForWorkmateTheme
-import com.gab.recipesappforworkmate.util.GAB_CHECK
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
@@ -20,38 +21,19 @@ class MainActivity : ComponentActivity() {
     }
 
     @Inject
-    lateinit var exps: Exps
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        enableEdgeToEdge()
+        enableEdgeToEdge()
         component.inject(this)
         setContent {
             RecipesAppForWorkmateTheme {
-
-            }
-        }
-    }
-}
-
-class Exps @Inject constructor(
-    private val databaseRepository: DatabaseRepository,
-    private val networkRepository: NetworkRepository
-) {
-    private val cs = CoroutineScope(Dispatchers.IO)
-    init {
-        cs.launch {
-            networkRepository.searchRecipes("pasta", 3, 2)
-            networkRepository.getSearchedRecipesFlow().collect {
-                GAB_CHECK(it.size)
-                it.forEach {r ->
-                    databaseRepository.saveRecipe(r)
+                Surface(
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    MainComponent(modifier = Modifier.fillMaxSize(), viewModelFactory)
                 }
-            }
-        }
-        cs.launch {
-            databaseRepository.getSavedRecipes().collect {
-                GAB_CHECK(it)
             }
         }
     }

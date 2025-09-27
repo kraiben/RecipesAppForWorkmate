@@ -4,6 +4,7 @@ import com.gab.recipesappforworkmate.data.filework.database.RecipeDao
 import com.gab.recipesappforworkmate.data.filework.entities.RecipeDishTypeCrossRef
 import com.gab.recipesappforworkmate.domain.entities.RecipeInfoModel
 import com.gab.recipesappforworkmate.domain.repositories.DatabaseRepository
+import com.gab.recipesappforworkmate.util.GAB_CHECK
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -11,7 +12,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class DatabaseRepositoryImpl @Inject constructor(
@@ -21,36 +22,45 @@ class DatabaseRepositoryImpl @Inject constructor(
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
-    override suspend fun saveRecipe(recipe: RecipeInfoModel) {
-        coroutineScope.launch {
+    private val _savedRecipesFlow = MutableSharedFlow<List<RecipeInfoModel>>(replay = 1)
+    private val savedRecipesFlow: StateFlow<List<RecipeInfoModel>?> = flow {
+        val recipes = dao.getAllRecipesWithDetails()
+        _savedRecipesFlow.emit(recipes.map { r -> with(mapper) { r.toInfoModel() } })
+        _savedRecipesFlow.collect {
+            emit(it)
+        }
+    }.stateIn(coroutineScope, SharingStarted.Lazily, null)
+
+    override suspend fun saveRecipe(recipe: RecipeInfoModel): Unit = withContext(Dispatchers.IO) {
+        withContext(Dispatchers.IO) {
+            GAB_CHECK("saveRecipe $recipe")
             with(mapper) {
-                dao.insertRecipe(recipe.toEntity())
-                dao.insertDishTypes(recipe.dishTypes.map { it.toEntity() })
-                dao.insertRecipeDishTypes(recipe.dishTypes.map {
-                    RecipeDishTypeCrossRef(
-                        recipe.id,
-                        it.name
-                    )
-                })
-                dao.insertIngredients(recipe.ingredients.map { it.toEntity(recipe.id) })
-                dao.insertRecipeSteps(recipe.instructions.map {
-                    it.toEntity(recipe.id)
-                })
+                val recipeId = dao.insertRecipe(recipe.toEntity())
+                val dishTypesCrossRefs = recipe.dishTypes.map {
+                    val dt = it.toEntity()
+                    dao.insertDishType(dt)
+                    RecipeDishTypeCrossRef(recipe.id, dt.name)
+                }
+                dao.insertRecipeDishTypes(dishTypesCrossRefs)
+                dao.insertIngredients(recipe.ingredients.map { it.toEntity(recipeId) })
+                dao.insertRecipeSteps(recipe.instructions.map { it.toEntity(recipeId) })
+            }
+            savedRecipesFlow.value?.let { srf ->
+                _savedRecipesFlow.emit(
+                     listOf(recipe) + srf
+                )
             }
         }
     }
 
-    override suspend fun deleteSavedRecipe(recipe: RecipeInfoModel) {
-        TODO("Not yet implemented")
-    }
-    private val savedRecipesFlowNotifier = MutableSharedFlow<Unit>(replay = 1)
-    private val savedRecipesFlow: StateFlow<List<RecipeInfoModel>> = flow {
-        savedRecipesFlowNotifier.emit(Unit)
-        savedRecipesFlowNotifier.collect {
-            val recipes = dao.getAllRecipesWithDetails()
-            emit(recipes.map {r -> with(mapper) {r.toInfoModel()} })
+    override suspend fun deleteSavedRecipe(recipe: RecipeInfoModel): Unit =
+        withContext(Dispatchers.IO) {
+            dao.deleteRecipe(recipe.id)
+            savedRecipesFlow.value?.let { srf ->
+                _savedRecipesFlow.emit(
+                    srf.filter { it.id != recipe.id })
+            }
         }
-    }.stateIn(coroutineScope, SharingStarted.Lazily, emptyList())
 
-    override fun getSavedRecipes(): StateFlow<List<RecipeInfoModel>> = savedRecipesFlow
+    override fun getSavedRecipes(): StateFlow<List<RecipeInfoModel>?> = savedRecipesFlow
 }
