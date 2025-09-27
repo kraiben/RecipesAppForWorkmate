@@ -21,16 +21,19 @@ class DatabaseMapper @Inject constructor() {
         summaryDescription = summaryDescription
     )
 
-    fun DishType.toEntity(): DishTypeEntity = DishTypeEntity(name = this.name)
+    fun DishType.toEntity(): DishTypeEntity = DishTypeEntity(name = this.typeName)
 
-    fun IngredientInfoModel.toEntity(recipeId: Long): IngredientEntity = IngredientEntity(
-        recipeId = recipeId,
-        name = name,
-        amount = amount,
-        unit = unit,
-        description = description,
-        ingredientIconUri = ingredientIconUri.toString()
-    )
+    fun IngredientInfoModel.toEntity(recipeId: Long): IngredientEntity {
+        return IngredientEntity(
+            ingredientId = ingredientId,
+            recipeId = recipeId,
+            name = name,
+            amount = amount,
+            unit = unit,
+            description = description,
+            ingredientIconUri = ingredientIconUri.toString()
+        )
+    }
 
     fun RecipeStepInfoModel.toEntity(recipeId: Long): RecipeStepEntity = RecipeStepEntity(
         recipeId = recipeId,
@@ -38,20 +41,24 @@ class DatabaseMapper @Inject constructor() {
         description = description
     )
 
-    fun RecipeWithDetails.toInfoModel(): RecipeInfoModel = RecipeInfoModel(
-        id = recipe.id,
-        title = recipe.title,
-        cookingTimeInMinutes = recipe.cookingTimeInMinutes,
-        dishTypes = dishTypes.map { DishType.fromName(it.name) },
-        ingredients = ingredients.map { it.toInfoModel() },
-        recipeImageUri = recipe.recipeImageUri.toUri(),
-        summaryDescription = recipe.summaryDescription,
-        instructions = instructions.map { it.toInfoModel() }
-    )
+    fun RecipeWithDetails.toInfoModel(): RecipeInfoModel {
+        return RecipeInfoModel(
+            id = recipe.id,
+            title = recipe.title,
+            cookingTimeInMinutes = recipe.cookingTimeInMinutes,
+            dishTypes = dishTypes.map { DishType.fromName(it.name) },
+            ingredients = ingredients.map { it.toInfoModel() },
+            recipeImageUri = getImageUrl(recipe.id).toUri(),
+            summaryDescription = recipe.summaryDescription,
+            instructions = instructions.map { it.toInfoModel() }
+        )
+    }
+
     fun RecipeStepEntity.toInfoModel(): RecipeStepInfoModel = RecipeStepInfoModel(
         number = number,
         description = description
     )
+
     fun IngredientEntity.toInfoModel(): IngredientInfoModel = IngredientInfoModel(
         ingredientId = ingredientId,
         name = name,
@@ -60,4 +67,12 @@ class DatabaseMapper @Inject constructor() {
         description = description,
         ingredientIconUri = ingredientIconUri.toUri()
     )
+
+    fun getImageUrl(recipeId: Long): String {
+        return "https://img.spoonacular.com/recipes/$recipeId-$RECIPE_IMAGE_QUALITY.jpg"
+    }
+
+    companion object {
+        private const val RECIPE_IMAGE_QUALITY = "556x370"
+    }
 }

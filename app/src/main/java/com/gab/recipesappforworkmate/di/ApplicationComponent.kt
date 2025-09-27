@@ -6,7 +6,7 @@ import dagger.BindsInstance
 import dagger.Component
 
 @Component(
-    modules = [ApplicationModule::class, DataModule::class]
+    modules = [ApplicationModule::class, DataModule::class, ViewModelModule::class]
 )
 @ApplicationScope
 interface ApplicationComponent {

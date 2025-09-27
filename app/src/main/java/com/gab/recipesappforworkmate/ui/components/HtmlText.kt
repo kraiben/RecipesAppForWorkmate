@@ -12,6 +12,7 @@ import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.fromHtml
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 
 @Composable
@@ -34,6 +35,7 @@ fun HtmlText(
     Text(
         text = annotatedString,
         modifier = modifier,
-        style = style
+        style = style,
+        textAlign = TextAlign.Center
     )
 }

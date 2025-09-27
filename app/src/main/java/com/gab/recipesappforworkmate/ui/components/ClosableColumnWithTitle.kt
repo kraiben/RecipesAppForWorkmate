@@ -1,0 +1,95 @@
+package com.gab.recipesappforworkmate.ui.components
+
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardDoubleArrowDown
+import androidx.compose.material.icons.filled.KeyboardDoubleArrowUp
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.gab.recipesappforworkmate.util.GAB_CHECK
+
+@Composable
+fun <T> ClosableColumnWithTitle(
+    modifier: Modifier = Modifier,
+    title: String,
+    items: List<T>,
+    itemContent: @Composable (T) -> Unit,
+) {
+    GAB_CHECK(items)
+    var isVisible by remember {
+        mutableStateOf(false)
+    }
+    Column(modifier = modifier) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Text(
+                title, style = MaterialTheme.typography.titleLarge, modifier = Modifier
+                    .wrapContentSize(align = Alignment.CenterStart)
+            )
+            AnimatedContent(
+                targetState = isVisible,
+                transitionSpec = {
+                    (fadeIn(animationSpec = tween(delayMillis = 100)) +
+                            slideInVertically(animationSpec = tween(delayMillis = 100))).togetherWith(
+                        fadeOut(animationSpec = tween(delayMillis = 100)) +
+                                slideOutVertically(animationSpec = tween(delayMillis = 100))
+                    )
+                },
+                label = ""
+            ) { targetState ->
+                Icon(
+                    imageVector = if (targetState) Icons.Default.KeyboardDoubleArrowUp else Icons.Default.KeyboardDoubleArrowDown,
+                    contentDescription = if (targetState) "Ingredients visible" else "Ingredients invisible",
+                    tint = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier
+                        .animateContentSize()
+                        .clickable { isVisible = !isVisible }
+                )
+            }
+        }
+        AnimatedVisibility(visible = isVisible) {
+            Column(
+                modifier = Modifier.wrapContentHeight(align = Alignment.Top)
+            ) {
+                items.forEach { item ->
+                    itemContent(item)
+                    HorizontalDivider(
+                        thickness = 1.dp,
+                        color = MaterialTheme.colorScheme.secondary,
+                        modifier = Modifier.padding(4.dp)
+                    )
+                }
+            }
+        }
+    }
+}

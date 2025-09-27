@@ -16,10 +16,10 @@ import com.gab.recipesappforworkmate.data.filework.entities.RecipeWithDetails
 interface RecipeDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertRecipe(recipe: RecipeEntity)
+    suspend fun insertRecipe(recipe: RecipeEntity): Long
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertDishTypes(dishTypes: List<DishTypeEntity>)
+    suspend fun insertDishType(dishType: DishTypeEntity)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertRecipeDishTypes(crossRefs: List<RecipeDishTypeCrossRef>)
@@ -40,4 +40,6 @@ interface RecipeDao {
 
     @Query("DELETE FROM recipes WHERE id = :recipeId")
     suspend fun deleteRecipe(recipeId: Long)
+
+
 }

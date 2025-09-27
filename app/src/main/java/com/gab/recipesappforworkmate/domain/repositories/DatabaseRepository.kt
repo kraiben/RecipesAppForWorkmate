@@ -9,6 +9,6 @@ interface DatabaseRepository {
 
     suspend fun deleteSavedRecipe(recipe: RecipeInfoModel)
 
-    fun getSavedRecipes(): StateFlow<List<RecipeInfoModel>>
+    fun getSavedRecipes(): StateFlow<List<RecipeInfoModel>?>
 
 }
